@@ -24,9 +24,14 @@ const Navbar = () => {
       : "text-gray-700 hover:text-blue-500";
 
   return (
-    <nav className="bg-white shadow-md px-6 py-4 flex items-center justify-between">
+    <nav className=" shadow-md px-6 py-0 flex items-center justify-between" style={{ backgroundColor: "#F9F8F7" }}>
       {/* Logo */}
-      <div className="text-xl font-bold text-blue-600">FinTrack</div>
+      {/* <div className="text-xl font-bold text-blue-600">FinTrack</div> */}
+      <img
+        src={require("../assets/FinTrack-logo.png")}
+        alt="FinTrack Logo"
+        className="h-20 w-22"
+      />
 
       {/* Page Links */}
       <div className="flex-1 flex justify-center space-x-8">
@@ -56,9 +61,7 @@ const Navbar = () => {
         </button>
 
         {isMenuOpen && (
-          <div
-            className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg z-10 transform transition-all duration-200 origin-top scale-95 animate-fade-in"
-          >
+          <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg z-10 transform transition-all duration-200 origin-top scale-95 animate-fade-in">
             <Link
               to="/profile"
               className="block px-4 py-2 hover:bg-gray-100 text-sm text-gray-700"
