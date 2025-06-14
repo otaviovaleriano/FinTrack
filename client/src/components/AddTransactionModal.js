@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { addExpense } from "../api";
 
 const AddTransactionModal = ({ isOpen, onClose, onAdd, defaultData }) => {
   const [form, setForm] = useState({
@@ -35,7 +36,7 @@ const AddTransactionModal = ({ isOpen, onClose, onAdd, defaultData }) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!form.description || !form.amount || !form.date || !form.category) {
@@ -47,18 +48,27 @@ const AddTransactionModal = ({ isOpen, onClose, onAdd, defaultData }) => {
       ...form,
       amount: parseFloat(form.amount),
     };
+    console.log("Transaction being submitted:", transaction);
 
-    onAdd(transaction);
+    try {
+      const token = localStorage.getItem("token");
+      const saved = await addExpense(transaction, token);
 
-    // Reset only if not editing
-    if (!defaultData) {
-      setForm({
-        type: "expense",
-        category: "",
-        description: "",
-        amount: "",
-        date: "",
-      });
+      onAdd(saved); // update list in parent
+      onClose(); // close modal
+
+      if (!defaultData) {
+        setForm({
+          type: "expense",
+          category: "",
+          description: "",
+          amount: "",
+          date: "",
+        });
+      }
+    } catch (err) {
+      console.error("Error saving transaction:", err);
+      alert("Failed to save transaction.");
     }
   };
 
@@ -102,13 +112,14 @@ const AddTransactionModal = ({ isOpen, onClose, onAdd, defaultData }) => {
               className="w-full mt-1 border rounded px-3 py-2"
             >
               <option value="">Select category</option>
-              {(form.type === "expense" ? expenseCategories : incomeCategories).map(
-                (cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
-                )
-              )}
+              {(form.type === "expense"
+                ? expenseCategories
+                : incomeCategories
+              ).map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
             </select>
           </div>
 

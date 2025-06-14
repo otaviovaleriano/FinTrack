@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
+import expenseRoutes from './routes/expenseRoutes.js';
 
 import authRoutes from './routes/authRoutes.js';
 
@@ -17,6 +18,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/expenses', expenseRoutes);
 
 // MongoDB -  Database Connection
 mongoose.connect(process.env.MONGO_URI, {

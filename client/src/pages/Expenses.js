@@ -5,6 +5,8 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 import DatePicker from "react-datepicker";
 import { isAfter, isBefore, parseISO } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
+import { addExpense, getExpenses } from "../api";
+import { useUser } from "../UserContext";
 
 const Expenses = () => {
   const [transactions, setTransactions] = useState([]);
@@ -13,37 +15,51 @@ const Expenses = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
-  useEffect(() => {
-    const saved = localStorage.getItem("transactions");
-    const savedStart = localStorage.getItem("filterStartDate");
-    const savedEnd = localStorage.getItem("filterEndDate");
+  // useEffect(() => {
+  //   const saved = localStorage.getItem("transactions");
+  //   const savedStart = localStorage.getItem("filterStartDate");
+  //   const savedEnd = localStorage.getItem("filterEndDate");
 
-    if (saved) setTransactions(JSON.parse(saved));
-    if (savedStart) setStartDate(new Date(savedStart));
-    if (savedEnd) setEndDate(new Date(savedEnd));
-  }, []);
+  //   if (saved) setTransactions(JSON.parse(saved));
+  //   if (savedStart) setStartDate(new Date(savedStart));
+  //   if (savedEnd) setEndDate(new Date(savedEnd));
+  // }, []);
 
-  useEffect(() => {
-    localStorage.setItem("transactions", JSON.stringify(transactions));
-  }, [transactions]);
+  const { user } = useUser();
 
   useEffect(() => {
-    if (startDate) localStorage.setItem("filterStartDate", startDate.toISOString());
+    const fetchExpenses = async () => {
+      const token = localStorage.getItem("token");
+      const data = await getExpenses(token);
+      const withId = data.map((exp) => ({
+        ...exp,
+        id: exp._id, // map backend _id to local id
+      }));
+      setTransactions(withId);
+    };
+
+    if (user) fetchExpenses();
+  }, [user]);
+
+  // useEffect(() => {
+  //   localStorage.setItem("transactions", JSON.stringify(transactions));
+  // }, [transactions]);
+
+  useEffect(() => {
+    if (startDate)
+      localStorage.setItem("filterStartDate", startDate.toISOString());
     else localStorage.removeItem("filterStartDate");
 
     if (endDate) localStorage.setItem("filterEndDate", endDate.toISOString());
     else localStorage.removeItem("filterEndDate");
   }, [startDate, endDate]);
 
-  const handleAddOrUpdateTransaction = (tx) => {
-    if (editTarget) {
-      setTransactions((prev) =>
-        prev.map((item) => (item.id === editTarget.id ? { ...tx, id: item.id } : item))
-      );
-      setEditTarget(null);
-    } else {
-      setTransactions((prev) => [tx, ...prev]);
-    }
+  const handleAddOrUpdateTransaction = (savedTx) => {
+    setTransactions((prev) =>
+      [savedTx, ...prev].sort((a, b) => new Date(b.date) - new Date(a.date))
+    );
+    setIsModalOpen(false); // hide modal on success
+    setEditTarget(null);
   };
 
   const handleEdit = (tx) => {
@@ -129,7 +145,10 @@ const Expenses = () => {
           ) : (
             <ul className="divide-y">
               {filteredTransactions.map((tx) => (
-                <li key={tx.id} className="py-3 flex justify-between items-center">
+                <li
+                  key={tx.id}
+                  className="py-3 flex justify-between items-center"
+                >
                   <div>
                     <div className="font-medium">{tx.description}</div>
                     <div className="text-sm text-gray-500">
