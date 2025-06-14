@@ -5,15 +5,14 @@ import {
   CardTitle,
   CardContent,
 } from "../components/ui/card";
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-} from "../components/ui/tabs";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import logo from "../assets/FinTrack-logo.png";
+import API from "../api";
+import { fetchCurrentUser } from "../api";
+import { useUser } from '../UserContext';
+import { useNavigate } from 'react-router-dom';
+
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -24,6 +23,8 @@ const LoginPage = () => {
   const [isLogin, setIsLogin] = useState(true);
 
   const [formErrors, setFormErrors] = useState({});
+
+    const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -45,26 +46,75 @@ const LoginPage = () => {
     return errors;
   };
 
-  const handleLogin = () => {
+  const { login } = useUser();
+
+  const handleLogin = async () => {
     const errors = validateLogin();
     if (Object.keys(errors).length > 0) return setFormErrors(errors);
-    console.log("Logging in with:", formData);
-    // TODO for when I can integrate backend
+
+    try {
+      const { data } = await API.post("/auth/login", {
+        email: formData.email,
+        password: formData.password,
+      });
+      localStorage.setItem("token", data.token);
+
+      const user = await fetchCurrentUser(data.token);
+      login(user);
+      navigate('/');
+      console.log("User data:", user);
+
+      // need to do: Save to context or redirect
+    } catch (err) {
+      console.error(err);
+      setFormErrors({ general: err.response?.data?.message || "Login failed" });
+    }
   };
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     const errors = validateSignup();
     if (Object.keys(errors).length > 0) return setFormErrors(errors);
-    console.log("Creating account with:", formData);
-    // TODO for when I can integrate backend
+
+    try {
+      const { data } = await API.post("/auth/register", {
+        name: formData.email.split("@")[0], // or use a dedicated name input later
+        email: formData.email,
+        password: formData.password,
+      });
+
+      localStorage.setItem("token", data.token);
+
+      const user = await fetchCurrentUser(data.token);
+      login(user);
+      navigate('/');
+      console.log("User data:", user);
+
+      // TODO: Save to context or redirect
+    } catch (err) {
+      console.error(err);
+      setFormErrors({
+        general: err.response?.data?.message || "Signup failed",
+      });
+    }
+    
+    
   };
+
+
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 p-4">
-      <Card className="w-full max-w-md shadow-xl" style={{ backgroundColor: "#F9F8F7" }}>
+      <Card
+        className="w-full max-w-md shadow-xl"
+        style={{ backgroundColor: "#F9F8F7" }}
+      >
         <CardHeader className="text-center">
           <img src={logo} alt="FinTrack Logo" className="w-40 mx-auto mb-4" />
-          <CardTitle className="text-2xl mt-4 text-blue-500">Welcome to FinTrack</CardTitle>
+          <CardTitle className="text-2xl mt-4 text-blue-500">
+            Welcome to FinTrack
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4 mt-4">
@@ -109,6 +159,12 @@ const LoginPage = () => {
                   </p>
                 )}
               </>
+            )}
+
+            {formErrors.general && (
+              <p className="text-red-500 text-sm text-center">
+                {formErrors.general}
+              </p>
             )}
 
             <Button
