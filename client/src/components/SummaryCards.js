@@ -1,6 +1,13 @@
 import React from "react";
+import SavingsGoalCard from "./SavingsGoalCard";
+import { DollarSign, TrendingDown } from "lucide-react";
 
-const SummaryCards = ({ transactions }) => {
+const SummaryCards = ({
+  transactions,
+  goalAmount,
+  handleGoalClear,
+  handleGoalEdit,
+}) => {
   const incomeTotal = transactions
     .filter((t) => t.type === "income")
     .reduce((acc, t) => acc + t.amount, 0);
@@ -11,18 +18,36 @@ const SummaryCards = ({ transactions }) => {
 
   const balance = incomeTotal - expenseTotal;
 
-  const cardStyle = "bg-white p-6 rounded shadow-md flex-1";
+  const cardBase =
+    "bg-white rounded-xl shadow-md border px-2 py-1 flex items-center justify-center flex-col text-center";
 
   return (
-    <div className="flex flex-col sm:flex-row gap-4 max-w-4xl mx-auto mb-8">
-      <div className={cardStyle}>
-        <h3 className="text-sm text-gray-500">Current Balance</h3>
-        <p className="text-2xl font-bold text-blue-600">${balance.toFixed(2)}</p>
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-6xl mx-auto mb-8">
+      {/* Current Balance */}
+      <div className={`${cardBase} border-blue-200`}>
+        <DollarSign className="text-blue-600 w-8 h-8 mb-2" />
+        <p className="text-lg text-gray-500 font-medium">Current Balance</p>
+        <p className="text-3xl font-bold text-blue-600">
+          ${balance.toFixed(2)}
+        </p>
       </div>
-      <div className={cardStyle}>
-        <h3 className="text-sm text-gray-500">Amount Spent</h3>
-        <p className="text-2xl font-bold text-red-500">${expenseTotal.toFixed(2)}</p>
+
+      {/* Amount Spent */}
+      <div className={`${cardBase} border-red-200`}>
+        <TrendingDown className="text-red-500 w-8 h-8 mb-2" />
+        <p className="text-lg text-gray-500 font-medium">Amount Spent</p>
+        <p className="text-3xl font-bold text-red-500">
+          ${expenseTotal.toFixed(2)}
+        </p>
       </div>
+
+      {/* Savings Goal */}
+      <SavingsGoalCard
+        goal={goalAmount}
+        spent={expenseTotal}
+        onEdit={handleGoalEdit}
+        onClear={handleGoalClear}
+      />
     </div>
   );
 };

@@ -42,3 +42,34 @@ export const createExpense = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
+export const deleteExpense = async (req, res) => {
+  try {
+    const deleted = await Expense.findOneAndDelete({
+      _id: req.params.id,
+      user: req.user._id,
+    });
+
+    if (!deleted) return res.status(404).json({ message: "Expense not found" });
+    res.json({ message: "Deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const updateExpense = async (req, res) => {
+  try {
+    const { type, category, description, amount, date } = req.body;
+
+    const updated = await Expense.findOneAndUpdate(
+      { _id: req.params.id, user: req.user._id },
+      { type, category, description, amount, date },
+      { new: true }
+    );
+
+    if (!updated) return res.status(404).json({ message: "Expense not found" });
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};

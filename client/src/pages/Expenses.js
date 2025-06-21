@@ -5,8 +5,14 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 import DatePicker from "react-datepicker";
 import { isAfter, isBefore, parseISO } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
-import { addExpense, getExpenses } from "../api";
+import { getExpenses, deleteExpense } from "../api";
 import { useUser } from "../UserContext";
+import {
+  fetchSavingsGoal,
+  saveSavingsGoal,
+  clearSavingsGoal as clearGoalAPI,
+} from "../api";
+import SetGoalModal from "../components/SetGoalModal";
 
 const Expenses = () => {
   const [transactions, setTransactions] = useState([]);
@@ -14,36 +20,31 @@ const Expenses = () => {
   const [editTarget, setEditTarget] = useState(null);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-
-  // useEffect(() => {
-  //   const saved = localStorage.getItem("transactions");
-  //   const savedStart = localStorage.getItem("filterStartDate");
-  //   const savedEnd = localStorage.getItem("filterEndDate");
-
-  //   if (saved) setTransactions(JSON.parse(saved));
-  //   if (savedStart) setStartDate(new Date(savedStart));
-  //   if (savedEnd) setEndDate(new Date(savedEnd));
-  // }, []);
+  const [goal, setGoal] = useState(null);
+  const [isGoalModalOpen, setIsGoalModalOpen] = useState(false);
 
   const { user } = useUser();
 
-  useEffect(() => {
-    const fetchExpenses = async () => {
+  // ✅ Move this to the top-level so it’s usable everywhere
+  const fetchExpenses = async () => {
+    try {
       const token = localStorage.getItem("token");
       const data = await getExpenses(token);
       const withId = data.map((exp) => ({
         ...exp,
-        id: exp._id, // map backend _id to local id
+        id: exp._id,
       }));
       setTransactions(withId);
-    };
+    } catch (err) {
+      console.error("Failed to fetch expenses:", err);
+    }
+  };
 
-    if (user) fetchExpenses();
+  useEffect(() => {
+    if (user) {
+      fetchExpenses();
+    }
   }, [user]);
-
-  // useEffect(() => {
-  //   localStorage.setItem("transactions", JSON.stringify(transactions));
-  // }, [transactions]);
 
   useEffect(() => {
     if (startDate)
@@ -55,21 +56,58 @@ const Expenses = () => {
   }, [startDate, endDate]);
 
   const handleAddOrUpdateTransaction = (savedTx) => {
-    setTransactions((prev) =>
-      [savedTx, ...prev].sort((a, b) => new Date(b.date) - new Date(a.date))
-    );
-    setIsModalOpen(false); // hide modal on success
+    const newTx = {
+      ...savedTx,
+      id: savedTx._id,
+    };
+
+    setTransactions((prev) => {
+      const index = prev.findIndex((tx) => tx._id === newTx._id);
+      if (index !== -1) {
+        const updated = [...prev];
+        updated[index] = newTx;
+        return updated.sort((a, b) => new Date(b.date) - new Date(a.date));
+      } else {
+        return [newTx, ...prev].sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        );
+      }
+    });
+
     setEditTarget(null);
   };
+
+  useEffect(() => {
+    const fetchGoal = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const goalData = await fetchSavingsGoal(token);
+        setGoal(goalData);
+      } catch (err) {
+        console.error("Failed to load goal:", err);
+      }
+    };
+
+    if (user) {
+      fetchGoal();
+    }
+  }, [user]);
 
   const handleEdit = (tx) => {
     setEditTarget(tx);
     setIsModalOpen(true);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this transaction?")) {
-      setTransactions((prev) => prev.filter((tx) => tx.id !== id));
+      try {
+        const token = localStorage.getItem("token");
+        await deleteExpense(id, token);
+        setTransactions((prev) => prev.filter((tx) => tx.id !== id));
+      } catch (err) {
+        console.error("Failed to delete:", err);
+        alert("Error deleting transaction.");
+      }
     }
   };
 
@@ -79,6 +117,23 @@ const Expenses = () => {
     if (endDate && isAfter(txDate, endDate)) return false;
     return true;
   });
+
+  const handleGoalEdit = () => {
+    setIsGoalModalOpen(true);
+  };
+
+  const handleGoalClear = async () => {
+    if (window.confirm("Are you sure you want to clear your savings goal?")) {
+      try {
+        const token = localStorage.getItem("token");
+        await clearGoalAPI(token);
+        setGoal(null);
+      } catch (err) {
+        console.error("Error clearing goal:", err);
+        alert("Failed to clear goal.");
+      }
+    }
+  };
 
   return (
     <div className="relative min-h-screen bg-gray-100 px-4 py-8">
@@ -102,9 +157,30 @@ const Expenses = () => {
         + Add Transaction
       </button>
 
-      <SummaryCards transactions={filteredTransactions} />
+      <SetGoalModal
+        isOpen={isGoalModalOpen}
+        onClose={() => setIsGoalModalOpen(false)}
+        onSave={async (newGoal) => {
+          try {
+            const token = localStorage.getItem("token");
+            const saved = await saveSavingsGoal(newGoal, token);
+            setGoal(saved);
+          } catch (err) {
+            console.error("Error saving goal:", err);
+            alert("Failed to save goal.");
+          }
+        }}
+        initialGoal={goal}
+      />
 
-      {/* Date Range Filters */}
+      <SummaryCards
+        transactions={filteredTransactions}
+        goalAmount={goal}
+        handleGoalEdit={handleGoalEdit}
+        handleGoalClear={handleGoalClear}
+      />
+
+      {/* Date Filters */}
       <div className="max-w-2xl mx-auto mb-4">
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Filter by Date Range:
@@ -121,7 +197,6 @@ const Expenses = () => {
               isClearable
             />
           </div>
-
           <div className="flex flex-col">
             <span className="text-sm text-gray-600">End Date</span>
             <DatePicker

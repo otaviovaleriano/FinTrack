@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { addExpense } from "../api";
+import { addExpense, updateExpense } from "../api";
 
 const AddTransactionModal = ({ isOpen, onClose, onAdd, defaultData }) => {
   const [form, setForm] = useState({
@@ -48,14 +48,23 @@ const AddTransactionModal = ({ isOpen, onClose, onAdd, defaultData }) => {
       ...form,
       amount: parseFloat(form.amount),
     };
+
     console.log("Transaction being submitted:", transaction);
 
     try {
       const token = localStorage.getItem("token");
-      const saved = await addExpense(transaction, token);
 
-      onAdd(saved); // update list in parent
-      onClose(); // close modal
+      let saved;
+      if (defaultData && defaultData._id) {
+        //editing
+        saved = await updateExpense(defaultData._id, transaction, token);
+      } else {
+        // adding new
+        saved = await addExpense(transaction, token);
+      }
+
+      onAdd(saved);
+      onClose();
 
       if (!defaultData) {
         setForm({
