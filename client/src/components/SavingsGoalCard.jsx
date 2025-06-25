@@ -16,7 +16,7 @@ const SavingsGoalCard = ({ goal, spent, onEdit, onClear }) => {
     <div className="bg-white p-4 sm:p-5 md:p-6 rounded-xl shadow-sm flex flex-col justify-between">
       {goal ? (
         <>
-          <h3 className="text-lg font-semibold">Savings Goal</h3>
+          <h3 className="text-lg font-semibold">Expenses Limit Goal</h3>
           <p className="text-gray-600">
             {goal.startDate} – {goal.endDate}
           </p>
@@ -58,7 +58,7 @@ const SavingsGoalCard = ({ goal, spent, onEdit, onClear }) => {
             onClick={onEdit}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
-            Set a Savings Goal
+            Set an Expenses Limit Goal
           </button>
         </div>
       )}

@@ -1,31 +1,71 @@
-import React from "react";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "../components/ui/tabs";
+import React, { useEffect, useState } from "react";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "../components/ui/tabs";
 import TotalSpentCard from "../components/dashboard/TotalSpentCard";
 import GoalProgressCard from "../components/dashboard/GoalProgressCard";
 import SpendingByCategoryChart from "../components/dashboard/SpendingByCategoryChart";
 import IncomeSourceChart from "../components/dashboard/IncomeSourceChart";
+import { getExpenses, fetchSavingsGoal } from "../api";
+import { useUser } from "../UserContext";
 
 const Dashboard = () => {
-  const totalSpent = 640;
-  const savingGoal = 1000;
+  const { user } = useUser();
+  const [transactions, setTransactions] = useState([]);
+  const [goal, setGoal] = useState(null);
 
-  const spentByCategory = [
-    { name: "Groceries", amount: 220 },
-    { name: "Leisure", amount: 150 },
-    { name: "Bills", amount: 270 },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const txData = await getExpenses(token);
+        const withId = txData.map((t) => ({ ...t, id: t._id }));
+        setTransactions(withId);
 
-  const incomeSources = [
-    { name: "Current Work", amount: 950 },
-    { name: "Others", amount: 250 },
-  ];
+        const goalData = await fetchSavingsGoal(token);
+        setGoal(goalData);
+      } catch (err) {
+        console.error("Failed to fetch dashboard data:", err);
+      }
+    };
+
+    if (user) fetchData();
+  }, [user]);
+
+  const totalSpent = transactions
+    .filter((t) => t.type === "expense")
+    .reduce((acc, t) => acc + t.amount, 0);
+
+  const spentByCategory = Object.entries(
+    transactions
+      .filter((t) => t.type === "expense")
+      .reduce((acc, t) => {
+        acc[t.category] = (acc[t.category] || 0) + t.amount;
+        return acc;
+      }, {})
+  ).map(([name, amount]) => ({ name, amount }));
+
+  const incomeSources = Object.entries(
+    transactions
+      .filter((t) => t.type === "income")
+      .reduce((acc, t) => {
+        acc[t.category] = (acc[t.category] || 0) + t.amount;
+        return acc;
+      }, {})
+  ).map(([name, amount]) => ({ name, amount }));
 
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6">
       <h1 className="text-3xl font-bold">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <TotalSpentCard total={totalSpent} />
-        <GoalProgressCard totalSpent={totalSpent} savingGoal={savingGoal} />
+        <TotalSpentCard total={totalSpent.toFixed(2)} />
+        <GoalProgressCard
+          totalSpent={totalSpent.toFixed(2)}
+          savingGoal={goal ? goal.amount : 0}
+        />
       </div>
 
       <Tabs defaultValue="spending" className="w-full mt-6">
