@@ -22,6 +22,9 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = () => {
+    localStorage.removeItem("token"); 
+    localStorage.removeItem("filterStartDate");
+    localStorage.removeItem("filterEndDate");
     logout();
     navigate("/login");
   };

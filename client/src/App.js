@@ -49,7 +49,6 @@ function AppLayout() {
 }
 
 function App() {
-  localStorage.removeItem("token");
   return (
     <UserProvider>
       <Router>
