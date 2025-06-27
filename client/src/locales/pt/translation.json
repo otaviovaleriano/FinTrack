@@ -30,7 +30,88 @@
         "currentWork": "Trabalho Atual",
         "others": "Outros",
         "exampleIncome": "ex. Salário, Trabalho Freelance",
-        "exampleExpense": "ex. Aluguel, Supermercados, Utilidades"
+        "exampleExpense": "ex. Aluguel, Supermercados, Utilidades",
+        "update": "Atualizar Transação",
+        "alertFillFields": "Por favor, preencha todos os campos.",
+        "alertInvalidAmount": "Por favor, insira uma quantidade válida.",
+        "alertFailedToSave": "Não foi possível salvar a transação. Por favor, tente novamente."
+    },
+    "savingsGoalCard": {
+        "alert80percent": "⚠️ Você gastou mais de 80% do seu objetivo!",
+        "alert75percent": "⚠️ Você gastou mais de 75% do seu objetivo.",
+        "title": "Meta de Limite de Despesas",
+        "goal": "Meta",
+        "spent": "Gasto",
+        "edit": "Editar",
+        "clear": "Limpar",
+        "setGoal": "Definir uma Meta de Limite de Despesas",
+        "noGoal": "Nenhuma meta definida ainda."
+    },
+    "summaryCard": {
+        "current": "Saldo Atual",
+        "amount": "Valor Gasto"
+    },
+    "goalProgressCard": {
+        "title": "Progresso da Meta Máxima de Gastos",
+        "noGoal": "Nenhuma meta de gastos máxima definida.",
+        "goalExceeded": "Meta Excedida",
+        "goalNotExceeded": "Em Andamento",
+        "of": "de",
+        "spent": "gasto"
+    },
+    "incomeSourceChart": {
+        "title": "Fontes de Renda",
+        "noData": "Nenhum dado disponível",
+        "incomeSources": "Fontes de Renda",
+        "amount": "Quantidade"
+    },
+    "spendingByCategoryChart": {
+        "title": "Despesas por Categoria"
+    },
+    "totalSpentCard": {
+        "title": "Total Gasto",
+        "amount": "Valor Total Gasto"
+    },
+    "dashboardPage": {
+        "title": "Painel de Controle",
+        "download": "Baixar Relatório",
+        "downloadPdf": "📄 Relatório PDF",
+        "downloadExcel": "📊 Relatório Excel",
+        "pdfExplanation": "Isso gerará um relatório em PDF de suas transações.",
+        "excelExplanation": "Isso gerará um arquivo Excel de suas transações.",
+        "spending": "Despesas",
+        "income": "Renda",
+        "expenses": "Despesas",
+        "incomeSources": "Fontes de Renda",
+        "report": "Relatório FinTrack",
+        "date": "Data",
+        "amount": "Quantidade",
+        "category": "Categoria",
+        "description": "Descrição",
+        "type": "Tipo",
+        "grocery": "Supermercado",
+        "leisure": "Atividades de Lazer",
+        "bills": "Contas de Casa",
+        "work": "Trabalho",
+        "currentWork": "Trabalho Atual",
+        "others": "Outros",
+        "totalSpent": "Total Gasto",
+        "savingGoal": "Meta de Poupança",
+        "notSet": "Não Definido",
+        "spentByCategory": "Gasto por Categoria"
 
+    },
+    "expensesPage":{
+      "addTransaction": "Adicionar Transação",
+      "filterByDateRange": "Filtrar por Intervalo de Datas",
+      "startDate": "Data de Início",
+      "endDate": "Data de Término",
+      "downloadReport": "Baixar Relatório",
+      "downloadPdf": "📄 Baixar PDF",
+      "downloadExcel": "📊 Baixar Excel",
+      "Transactions": "Transações",
+      "noTransactions": "Nenhuma transação encontrada.",
+      "transactionReport": "Relatório de Transações"
     }
+
 }

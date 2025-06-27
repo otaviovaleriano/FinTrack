@@ -43,7 +43,7 @@ const AddTransactionModal = ({ isOpen, onClose, onAdd, defaultData }) => {
     e.preventDefault();
 
     if (!form.description || !form.amount || !form.date || !form.category) {
-      alert("Please fill in all fields.");
+      alert(t("addTransaction.alertFillFields"));
       return;
     }
 
@@ -80,7 +80,7 @@ const AddTransactionModal = ({ isOpen, onClose, onAdd, defaultData }) => {
       }
     } catch (err) {
       console.error("Error saving transaction:", err);
-      alert("Failed to save transaction.");
+      alert(t("addTransaction.alertFailedToSave"));
     }
   };
 
@@ -179,7 +179,7 @@ const AddTransactionModal = ({ isOpen, onClose, onAdd, defaultData }) => {
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
           >
-            {defaultData ? "Update Transaction" : "Add Transaction"}
+            {defaultData ? t("addTransaction.update") : t("addTransaction.add")}
           </button>
         </form>
       </div>

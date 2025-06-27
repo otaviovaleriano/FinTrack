@@ -8,7 +8,6 @@ import esFlag from "../assets/flags/es.png";
 import ptFlag from "../assets/flags/pt.png";
 import { useTranslation } from "react-i18next";
 
-
 const Navbar = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -76,10 +75,10 @@ const Navbar = () => {
       <img
         src={require("../assets/FinTrack-logo.png")}
         alt="FinTrack Logo"
-        className="h-20 w-22"
+        className="h-16 sm:h-20"
       />
 
-      <div className="flex-1 flex justify-center space-x-8">
+      <div className="flex-1 flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8">
         <Link to="/" className={linkStyle("/")}>
           {t("navbar.dashboard")}
         </Link>
@@ -88,23 +87,23 @@ const Navbar = () => {
         </Link>
       </div>
 
-      <div className="flex items-center space-x-4">
+      <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-4">
         {/* Language Switcher */}
         <div className="relative" ref={langRef}>
-          <button
+          <div
+            className="flex items-center justify-center h-9 w-9 rounded-full border border-gray-300 overflow-hidden cursor-pointer"
             onClick={() => setLangDropdown((prev) => !prev)}
-            className="w-8 h-8 rounded-full border border-gray-300 overflow-hidden"
             title="Change language"
           >
             <img
               src={flags[i18n.language] || usFlag}
               alt="Lang"
-              className="w-full h-full object-cover"
+              className="w-6 h-6 object-cover"
             />
-          </button>
+          </div>
 
           {langDropdown && (
-            <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow z-50">
+            <div className="absolute right-0 mt-15 w-40 bg-white border rounded-md shadow z-50">
               <button
                 onClick={() => changeLanguage("en")}
                 className="w-full px-4 py-2 hover:bg-gray-100 flex items-center gap-2"

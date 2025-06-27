@@ -30,8 +30,77 @@
     "currentWork": "Current Work",
     "others": "Others",
     "exampleIncome": "e.g Salary, Freelance Work",
-    "exampleExpense": "e.g Rent, Groceries, Utilities"
-    
-
+    "exampleExpense": "e.g Rent, Groceries, Utilities",
+    "update": "Update Transaction",
+    "alertFillFields": "Please fill in all fields.",
+    "alertInvalidAmount": "Please enter a valid amount.",
+    "alertFailedToSave": "Failed to save the transaction. Please try again."
+  },
+  "savingsGoalCard": {
+    "alert80percent": "⚠️ You have spent more than 80% of your goal!",
+    "alert75percent": "⚠️ You have spent over 75% of your goal.",
+    "title": "Expenses Limit Goal",
+    "goal": "Goal",
+    "spent": "Spent",
+    "edit": "Edit",
+    "clear": "Clear",
+    "setGoal": "Set an Expenses Limit Goal",
+    "noGoal": "No goal set yet."
+  },
+  "savingsGoalModal": {
+    "title": "Set Expenses Limit Goal",
+    "goal": "Goal Amount",
+    "start": "Start Date",
+    "end": "End Date",    "setGoal": "Save Goal",
+    "alertFillFields": "Please fill in all fields.",
+    "alertInvalidAmount": "Please enter a valid goal amount.",
+    "alertFailedToSave": "Failed to save the goal. Please try again."
+  },
+  "summaryCard": {
+    "current": "Current Balance",
+    "amount": "Amount Spent"
+  },
+  "goalProgressCard": {
+    "title": "Max Spending Goal Progress",
+    "noGoal": "No Saving Goal Set",
+    "goalExceeded": "Goal Exceeded",
+    "goalNotExceeded": "On Track",
+    "of": "of",
+    "spent": "spent"
+  },
+  "incomeSourceChart": {
+    "title": "Income Sources",
+    "noData": "No data available"
+  },
+  "spendingByCategoryChart": {
+    "title": "Spending by Categories"
+  },
+  "totalSpentCard": {
+    "title": "Total Spent",
+    "amount": "Total Amount Spent"
+  },
+  "dashboardPage": {
+    "title": "Dashboard",
+    "download": "Download Report",
+    "downloadPdf": "📄 Download PDF",
+    "downloadExcel": "📊 Download Excel",
+    "pdfExplanation": "This will generate a PDF report of your transactions.",
+    "excelExplanation": "This will generate an Excel file of your transactions.",
+    "spending": "Spending",
+    "income": "Income",
+    "report": "FinTrack Report"
+  },
+  "expensesPage": {
+    "addTransaction": "Add Transaction",
+    "filterByDateRange": "Filter by Date Range",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "downloadReport": "Download Report",
+    "downloadPdf": "📄 Download PDF",
+    "downloadExcel": "📊 Download Excel",
+    "noTransactions": "No transactions found.",
+    "Transactions": "Transactions",
+    "transactionReport": "Transaction Report"
   }
+
 }

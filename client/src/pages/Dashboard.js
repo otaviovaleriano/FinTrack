@@ -29,6 +29,8 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import i18n from "i18next";
+import { useTranslation } from "react-i18next";
 
 const Dashboard = () => {
   const { user } = useUser();
@@ -36,6 +38,7 @@ const Dashboard = () => {
   const [goal, setGoal] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -141,7 +144,7 @@ const Dashboard = () => {
 
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6">
-      <h1 className="text-3xl font-bold">Dashboard</h1>
+      <h1 className="text-3xl font-bold">{t("dashboardPage.title")}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <TotalSpentCard total={totalSpent.toFixed(2)} />
         <GoalProgressCard
@@ -156,7 +159,7 @@ const Dashboard = () => {
             variant="outline"
             onClick={() => setShowDropdown((prev) => !prev)}
           >
-            Download Report
+            {t("dashboardPage.download")}
           </Button>
 
           {showDropdown && (
@@ -168,7 +171,7 @@ const Dashboard = () => {
                   setShowDropdown(false);
                 }}
               >
-                📄 PDF Report
+              {t("dashboardPage.downloadPdf")}
               </div>
               <div
                 className="px-3 py-2 hover:bg-gray-100 cursor-pointer rounded"
@@ -177,7 +180,7 @@ const Dashboard = () => {
                   setShowDropdown(false);
                 }}
               >
-                📊 Excel Report
+              {t("dashboardPage.downloadExcel")}
               </div>
             </div>
           )}
@@ -192,9 +195,9 @@ const Dashboard = () => {
           <Info />
           {showTooltip && (
             <div className="absolute bg-black text-white text-sm p-2 rounded z-50 mt-2 right-0 w-56">
-              <strong>PDF:</strong> Visual report with summary and charts.
+              <strong>PDF:</strong> {t("dashboardPage.pdfExplanation")}
               <br />
-              <strong>Excel:</strong> Table of your data for editing.
+              <strong>Excel:</strong> {t("dashboardPage.excelExplanation")}
             </div>
           )}
         </div>
@@ -202,8 +205,8 @@ const Dashboard = () => {
 
       <Tabs defaultValue="spending" className="w-full mt-6">
         <TabsList>
-          <TabsTrigger value="spending">Spending</TabsTrigger>
-          <TabsTrigger value="income">Income</TabsTrigger>
+          <TabsTrigger value="spending">{t("dashboardPage.spending")}</TabsTrigger>
+          <TabsTrigger value="income">{t("dashboardPage.income")}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="spending">

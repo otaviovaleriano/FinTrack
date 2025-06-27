@@ -30,7 +30,69 @@
         "currentWork": "Trabajo Actual",
         "others": "Otros",
         "exampleIncome": "p. ej. Salario, Trabajo Freelance",
-        "exampleExpense": "p. ej. Alquiler, Supermercados"
+        "exampleExpense": "p. ej. Alquiler, Supermercados",
+        "update": "Actualizar Transacción",
+        "alertFillFields": "Por favor, complete todos los campos.",
+        "alertInvalidAmount": "Por favor, ingrese una cantidad válida.",
+        "alertFailedToSave": "No se pudo guardar la transacción. Por favor, inténtelo de nuevo."
+    },
+    "savingsGoalCard": {
+        "alert80percent": "⚠️ ¡Has gastado más del 80% de tu meta!",
+        "alert75percent": "⚠️ Has gastado más del 75% de tu meta.",
+        "title": "Meta de Límite de Gastos",
+        "goal": "Meta",
+        "spent": "Gastado",
+        "edit": "Editar",
+        "clear": "Borrar",
+        "setGoal": "Establecer una Meta de Límite de Gastos",
+        "noGoal": "No se ha establecido ninguna meta."
+    },
+    "summaryCard": {
+        "current": "Saldo Actual",
+        "amount": "Cantidad Gastada"
+    },
+    "goalProgressCard": {
+        "title": "Progreso de la Meta de Ahorro",
+        "noGoal": "No se ha establecido ninguna meta de ahorro.",
+        "goalExceeded": "Meta Excedida",
+        "goalNotExceeded": "En Camino",
+        "of": "de",
+        "spent": "gastado"
+    },
+    "incomeSourceChart": {
+        "title": "Fuentes de Ingreso",
+        "salary": "Salario",
+        "freelance": "Freelance"
+    },
+    "spendingByCategoryChart": {
+        "title": "Gastos por Categoría"
+    },
+    "totalSpentCard": {
+        "title": "Total Gastado",
+        "amount": "Cantidad"
+    },
+    "dashboardPage": {
+        "title": "Tablero",
+        "download": "Descargar Reporte",
+        "downloadPdf": "📄 Reporte PDF",
+        "downloadExcel": "📊 Reporte Excel",
+        "pdfExplanation": "Esto generará un informe en PDF de sus transacciones.",
+        "excelExplanation": "Esto generará un archivo de Excel de sus transacciones.",
+        "spending": "Gastos",
+        "income": "Ingresos",
+        "report": "Informe de FinTrack"
+    },
+    "expensesPage": {
+        "addTransaction": "Agregar Transacción",
+        "filterByDateRange": "Filtrar por Rango de Fechas",
+        "startDate": "Fecha de Inicio",
+        "endDate": "Fecha de Fin",
+        "downloadReport": "Descargar Reporte",
+        "downloadPdf": "📄 Reporte PDF",
+        "downloadExcel": "📊 Reporte Excel",
+        "noTransactions": "No se encontraron transacciones.",
+        "Transactions": "Transacciones",
+        "noData": "No hay datos disponibles",
+        "transactionReport": "Informe de Transacciones"
     }
-
 }

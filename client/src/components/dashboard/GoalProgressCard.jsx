@@ -1,15 +1,19 @@
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
+import i18n from "i18next";
+import { useTranslation } from "react-i18next";
 
 const GoalProgressCard = ({ totalSpent, savingGoal }) => {
+  const { t } = useTranslation();
+
   if (!savingGoal || savingGoal === 0) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Saving Goal</CardTitle>
+          <CardTitle>{t("goalProgressCard.title")}</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-gray-500 text-sm">No Saving Goal Set</p>
+          <p className="text-gray-500 text-sm">{t("goalProgressCard.noGoal")}</p>
         </CardContent>
       </Card>
     );
@@ -20,9 +24,9 @@ const GoalProgressCard = ({ totalSpent, savingGoal }) => {
   return (
     <Card>
       <CardHeader className="flex flex-row justify-between items-center">
-        <CardTitle>Saving Goal</CardTitle>
+        <CardTitle>{t("goalProgressCard.title")}</CardTitle>
         <Badge variant={percent >= 100 ? "destructive" : "default"}>
-          {percent >= 100 ? "Goal Exceeded" : "On Track"}
+          {percent >= 100 ? t("goalProgressCard.goalExceeded") : t("goalProgressCard.goalNotExceeded")}
         </Badge>
       </CardHeader>
       <CardContent>
@@ -33,7 +37,7 @@ const GoalProgressCard = ({ totalSpent, savingGoal }) => {
           ></div>
         </div>
         <p className="text-sm text-gray-600 mt-2">
-          ${totalSpent} of ${savingGoal} spent
+          ${totalSpent} {t("goalProgressCard.of")} ${savingGoal} {t("goalProgressCard.spent")}
         </p>
       </CardContent>
     </Card>

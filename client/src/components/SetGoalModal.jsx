@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import i18n from "i18next";
+import { useTranslation } from "react-i18next";
 
 const SetGoalModal = ({ isOpen, onClose, onSave, initialGoal }) => {
+  const { t } = useTranslation();
   const [amount, setAmount] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -44,10 +47,10 @@ const SetGoalModal = ({ isOpen, onClose, onSave, initialGoal }) => {
         >
           ×
         </button>
-        <h2 className="text-xl font-semibold mb-4">Set Savings Goal</h2>
+        <h2 className="text-xl font-semibold mb-4">{t("savingsGoalModal.title")}</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium">Goal Amount</label>
+            <label className="block text-sm font-medium">{t("savingsGoalModal.goal")}</label>
             <input
               type="number"
               value={amount}
@@ -56,7 +59,7 @@ const SetGoalModal = ({ isOpen, onClose, onSave, initialGoal }) => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium">Start Date</label>
+            <label className="block text-sm font-medium">{t("savingsGoalModal.start")}</label>
             <DatePicker
               selected={startDate}
               onChange={(date) => setStartDate(date)}
@@ -65,7 +68,7 @@ const SetGoalModal = ({ isOpen, onClose, onSave, initialGoal }) => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium">End Date</label>
+            <label className="block text-sm font-medium">{t("savingsGoalModal.end")}</label>
             <DatePicker
               selected={endDate}
               onChange={(date) => setEndDate(date)}
@@ -77,7 +80,7 @@ const SetGoalModal = ({ isOpen, onClose, onSave, initialGoal }) => {
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
           >
-            Save Goal
+            {t("savingsGoalModal.setGoal")}
           </button>
         </form>
       </div>
