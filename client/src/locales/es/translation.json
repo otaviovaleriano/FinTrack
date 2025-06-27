@@ -1,0 +1,36 @@
+{
+    "navbar": {
+        "dashboard": "Tablero",
+        "expenses": "Gastos",
+        "add_transaction": "Agregar Transacción",
+        "logout": "Cerrar sesión"
+    },
+    "addTransaction": {
+        "addnewexpense": "Agregar Nuevo Gasto",
+        "addexpense": "Agregar Gasto",
+        "add": "Agregar Transacción",
+        "edit": "Editar Transacción",
+        "delete": "Eliminar Transacción",
+        "title": "Título",
+        "amount": "Cantidad",
+        "category": "Categoría",
+        "date": "Fecha",
+        "description": "Descripción",
+        "submit": "Enviar",
+        "cancel": "Cancelar",
+        "expense": "Gasto",
+        "income": "Ingreso",
+        "selectCategory": "Seleccionar Categoría",
+        "selectType": "Seleccionar Tipo",
+        "type": "Tipo",
+        "grocery": "Supermercado",
+        "leisure": "Actividades Recreativas",
+        "bills": "Facturas de la Casa",
+        "work": "Trabajo",
+        "currentWork": "Trabajo Actual",
+        "others": "Otros",
+        "exampleIncome": "p. ej. Salario, Trabajo Freelance",
+        "exampleExpense": "p. ej. Alquiler, Supermercados"
+    }
+
+}

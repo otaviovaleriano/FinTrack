@@ -1,0 +1,36 @@
+{
+  "navbar": {
+    "dashboard": "Painel",
+    "expenses": "Despesas",
+    "logout": "Sair",
+    "myProfile": "Meu Perfil"
+  },
+    "addTransaction": {
+        "addnewexpense": "Adicionar Nova Despesa",
+        "addexpense": "Adicionar Despesa",
+        "add": "Adicionar Transação",
+        "edit": "Editar Transação",
+        "delete": "Excluir Transação",
+        "title": "Título",
+        "amount": "Quantidade",
+        "category": "Categoria",
+        "date": "Data",
+        "description": "Descrição",
+        "submit": "Enviar",
+        "cancel": "Cancelar",
+        "expense": "Despesa",
+        "income": "Renda",
+        "selectCategory": "Selecionar Categoria",
+        "selectType": "Selecionar Tipo",
+        "type": "Tipo",
+        "grocery": "Supermercado",
+        "leisure": "Atividades de Lazer",
+        "bills": "Contas de Casa",
+        "work": "Trabalho",
+        "currentWork": "Trabalho Atual",
+        "others": "Outros",
+        "exampleIncome": "ex. Salário, Trabalho Freelance",
+        "exampleExpense": "ex. Aluguel, Supermercados, Utilidades"
+
+    }
+}

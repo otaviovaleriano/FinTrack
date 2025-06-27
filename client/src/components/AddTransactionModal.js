@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { addExpense, updateExpense } from "../api";
+import i18n from "i18next";
+import { useTranslation } from "react-i18next";
 
 const AddTransactionModal = ({ isOpen, onClose, onAdd, defaultData }) => {
+  const { t } = useTranslation();
   const [form, setForm] = useState({
     type: "expense",
     category: "",
@@ -11,12 +14,12 @@ const AddTransactionModal = ({ isOpen, onClose, onAdd, defaultData }) => {
   });
 
   const expenseCategories = [
-    "Groceries",
-    "Leisure Activities",
-    "House Bills",
-    "Work",
+    t("addTransaction.grocery"),
+    t("addTransaction.leisure"),
+    t("addTransaction.bills"),
+    t("addTransaction.work"),
   ];
-  const incomeCategories = ["Current Work", "Others"];
+  const incomeCategories = [t("addTransaction.currentWork"), t("addTransaction.others")];
 
   useEffect(() => {
     if (defaultData) {
@@ -49,7 +52,7 @@ const AddTransactionModal = ({ isOpen, onClose, onAdd, defaultData }) => {
       amount: parseFloat(form.amount),
     };
 
-    console.log("Transaction being submitted:", transaction);
+    console.log("Transaction submitted:", transaction);
 
     try {
       const token = localStorage.getItem("token");
@@ -93,34 +96,34 @@ const AddTransactionModal = ({ isOpen, onClose, onAdd, defaultData }) => {
           ×
         </button>
         <h2 className="text-xl font-semibold mb-4">
-          {defaultData ? "Edit Transaction" : "Add Transaction"}
+          {defaultData ? t("addTransaction.edit") : t("addTransaction.add")}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Type */}
           <div>
-            <label className="block text-sm font-medium">Type</label>
+            <label className="block text-sm font-medium">{t("addTransaction.type")}</label>
             <select
               name="type"
               value={form.type}
               onChange={handleChange}
               className="w-full mt-1 border rounded px-3 py-2"
             >
-              <option value="expense">Expense</option>
-              <option value="income">Income</option>
+              <option value="expense">{t("addTransaction.expense")}</option>
+              <option value="income">{t("addTransaction.income")}</option>
             </select>
           </div>
 
           {/* Category */}
           <div>
-            <label className="block text-sm font-medium">Category</label>
+            <label className="block text-sm font-medium">{t("addTransaction.category")}</label>
             <select
               name="category"
               value={form.category}
               onChange={handleChange}
               className="w-full mt-1 border rounded px-3 py-2"
             >
-              <option value="">Select category</option>
+              <option value="">{t("addTransaction.selectCategory")}</option>
               {(form.type === "expense"
                 ? expenseCategories
                 : incomeCategories
@@ -134,7 +137,7 @@ const AddTransactionModal = ({ isOpen, onClose, onAdd, defaultData }) => {
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium">Description</label>
+            <label className="block text-sm font-medium">{t("addTransaction.description")}</label>
             <input
               name="description"
               value={form.description}
@@ -142,15 +145,15 @@ const AddTransactionModal = ({ isOpen, onClose, onAdd, defaultData }) => {
               className="w-full mt-1 border rounded px-3 py-2"
               placeholder={
                 form.type === "income"
-                  ? "e.g. Freelance payment"
-                  : "e.g. Electricity bill"
+                  ? t("addTransaction.exampleIncome")
+                  : t("addTransaction.exampleExpense")
               }
             />
           </div>
 
           {/* Amount */}
           <div>
-            <label className="block text-sm font-medium">Amount</label>
+            <label className="block text-sm font-medium">{t("addTransaction.amount")}</label>
             <input
               name="amount"
               type="number"
@@ -162,7 +165,7 @@ const AddTransactionModal = ({ isOpen, onClose, onAdd, defaultData }) => {
 
           {/* Date */}
           <div>
-            <label className="block text-sm font-medium">Date</label>
+            <label className="block text-sm font-medium">{t("addTransaction.date")}</label>
             <input
               name="date"
               type="date"

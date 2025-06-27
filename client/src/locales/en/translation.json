@@ -1,0 +1,37 @@
+{
+  "navbar": {
+    "dashboard": "Dashboard",
+    "expenses": "Expenses",
+    "logout": "Logout",
+    "myProfile": "My Profile"
+  },
+  "addTransaction": {
+    "addnewexpense": "Add New Expense",
+    "addexpense": "Add Expense",
+    "add": "Add Transaction",
+    "edit": "Edit Transaction",
+    "delete": "Delete Transaction",
+    "title": "Title",
+    "amount": "Amount",
+    "category": "Category",
+    "date": "Date",
+    "description": "Description",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "expense": "Expense",
+    "income": "Income",
+    "selectCategory": "Select Category",
+    "selectType": "Select Type",
+    "type": "Type",
+    "grocery": "Grocery",
+    "leisure": "Leisure Activities",
+    "bills": "House Bills",
+    "work": "Work",
+    "currentWork": "Current Work",
+    "others": "Others",
+    "exampleIncome": "e.g Salary, Freelance Work",
+    "exampleExpense": "e.g Rent, Groceries, Utilities"
+    
+
+  }
+}

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import i18n from "i18next";
+import { useTranslation } from "react-i18next";
 
 const AddExpense = ({ onAdd }) => {
+  const { t } = useTranslation();
   const [form, setForm] = useState({
     title: "",
     amount: "",
@@ -31,11 +34,14 @@ const AddExpense = ({ onAdd }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md space-y-4 max-w-md mx-auto">
-      <h2 className="text-xl font-semibold">Add New Expense</h2>
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white p-6 rounded shadow-md space-y-4 max-w-md mx-auto"
+    >
+      <h2 className="text-xl font-semibold">{t("addTransaction.addnewexpense")}</h2>
 
       <div>
-        <label className="block text-sm font-medium">Title</label>
+        <label className="block text-sm font-medium">{t("addTransaction.title")}</label>
         <input
           name="title"
           value={form.title}
@@ -47,7 +53,7 @@ const AddExpense = ({ onAdd }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium">Amount ($)</label>
+        <label className="block text-sm font-medium">{t("addTransaction.amount")} ($)</label>
         <input
           name="amount"
           type="number"
@@ -59,7 +65,7 @@ const AddExpense = ({ onAdd }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium">Category</label>
+        <label className="block text-sm font-medium">{t("addTransaction.category")}</label>
         <input
           name="category"
           value={form.category}
@@ -70,7 +76,7 @@ const AddExpense = ({ onAdd }) => {
       </div>
 
       <div>
-        <label className="block text-sm font-medium">Date</label>
+        <label className="block text-sm font-medium">{t("addTransaction.date")}</label>
         <input
           name="date"
           type="date"
@@ -85,7 +91,7 @@ const AddExpense = ({ onAdd }) => {
         type="submit"
         className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
       >
-        Add Expense
+        {t("addTransaction.addexpense")}
       </button>
     </form>
   );

@@ -2,17 +2,32 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FiChevronDown } from "react-icons/fi";
 import { useUser } from "../UserContext";
+import i18n from "i18next";
+import usFlag from "../assets/flags/us.png";
+import esFlag from "../assets/flags/es.png";
+import ptFlag from "../assets/flags/pt.png";
+import { useTranslation } from "react-i18next";
+
 
 const Navbar = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [langDropdown, setLangDropdown] = useState(false);
   const menuRef = useRef(null);
+  const langRef = useRef(null);
+  const { t } = useTranslation();
 
   const handleClickOutside = (event) => {
-    if (menuRef.current && !menuRef.current.contains(event.target)) {
+    if (
+      menuRef.current &&
+      !menuRef.current.contains(event.target) &&
+      langRef.current &&
+      !langRef.current.contains(event.target)
+    ) {
       setIsMenuOpen(false);
+      setLangDropdown(false);
     }
   };
 
@@ -22,7 +37,7 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); 
+    localStorage.removeItem("token");
     localStorage.removeItem("filterStartDate");
     localStorage.removeItem("filterEndDate");
     logout();
@@ -42,6 +57,17 @@ const Navbar = () => {
       .toUpperCase()
       .slice(0, 2);
 
+  const flags = {
+    en: usFlag,
+    es: esFlag,
+    pt: ptFlag,
+  };
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+    setLangDropdown(false);
+  };
+
   return (
     <nav
       className="shadow-md px-6 py-0 flex items-center justify-between"
@@ -55,50 +81,88 @@ const Navbar = () => {
 
       <div className="flex-1 flex justify-center space-x-8">
         <Link to="/" className={linkStyle("/")}>
-          Dashboard
+          {t("navbar.dashboard")}
         </Link>
         <Link to="/expenses" className={linkStyle("/expenses")}>
-          Expenses
+          {t("navbar.expenses")}
         </Link>
       </div>
 
-      {user && (
-        <div className="relative" ref={menuRef}>
+      <div className="flex items-center space-x-4">
+        {/* Language Switcher */}
+        <div className="relative" ref={langRef}>
           <button
-            onClick={() => setIsMenuOpen((prev) => !prev)}
-            className="flex items-center space-x-2 focus:outline-none"
+            onClick={() => setLangDropdown((prev) => !prev)}
+            className="w-8 h-8 rounded-full border border-gray-300 overflow-hidden"
+            title="Change language"
           >
-            <div className="w-9 h-9 bg-gray-300 rounded-full flex items-center justify-center text-white font-bold">
-              {getInitials(user.name || user.email)}
-            </div>
-            <span className="text-gray-800 font-medium">
-              {user.name || user.email}
-            </span>
-            <FiChevronDown
-              className={`transition-transform duration-200 ${
-                isMenuOpen ? "rotate-180" : "rotate-0"
-              }`}
+            <img
+              src={flags[i18n.language] || usFlag}
+              alt="Lang"
+              className="w-full h-full object-cover"
             />
           </button>
 
-          {isMenuOpen && (
-            <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg z-10 transform transition-all duration-200 origin-top scale-95 animate-fade-in">
-              <Link
-                to="/profile"
-                className="block px-4 py-2 hover:bg-gray-100 text-sm text-gray-700"
-              >
-                My Profile
-              </Link>
+          {langDropdown && (
+            <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow z-50">
               <button
-                onClick={handleLogout}
-                className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-gray-700"
+                onClick={() => changeLanguage("en")}
+                className="w-full px-4 py-2 hover:bg-gray-100 flex items-center gap-2"
               >
-                Logout
+                <img src={usFlag} alt="EN" className="w-5 h-5" />
+                English
+              </button>
+              <button
+                onClick={() => changeLanguage("es")}
+                className="w-full px-4 py-2 hover:bg-gray-100 flex items-center gap-2"
+              >
+                <img src={esFlag} alt="ES" className="w-5 h-5" />
+                Español
+              </button>
+              <button
+                onClick={() => changeLanguage("pt")}
+                className="w-full px-4 py-2 hover:bg-gray-100 flex items-center gap-2"
+              >
+                <img src={ptFlag} alt="PT" className="w-5 h-5" />
+                Português
               </button>
             </div>
           )}
         </div>
-      )}
+
+        {/* User Menu */}
+        {user && (
+          <div className="relative" ref={menuRef}>
+            <button
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+              className="flex items-center space-x-2 focus:outline-none"
+            >
+              <div className="w-9 h-9 bg-gray-300 rounded-full flex items-center justify-center text-white font-bold">
+                {getInitials(user.name || user.email)}
+              </div>
+              <span className="text-gray-800 font-medium">
+                {user.name || user.email}
+              </span>
+              <FiChevronDown
+                className={`transition-transform duration-200 ${
+                  isMenuOpen ? "rotate-180" : "rotate-0"
+                }`}
+              />
+            </button>
+
+            {isMenuOpen && (
+              <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg z-10 transform transition-all duration-200 origin-top scale-95 animate-fade-in">
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm text-gray-700"
+                >
+                  {t("navbar.logout")}
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </nav>
   );
 };
